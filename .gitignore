@@ -20,3 +20,5 @@
 vendor/
 
 main
+
+.DS_Store
