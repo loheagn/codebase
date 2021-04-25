@@ -4,12 +4,12 @@ import (
 	"context"
 	"log"
 
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func getPodLabel(namespace, podName string) {
 	clientSet := GetKubeClient()
-	pod, err := clientSet.CoreV1().Pods(namespace).Get(context.TODO(), podName, v1.GetOptions{})
+	pod, err := clientSet.CoreV1().Pods(namespace).Get(context.TODO(), podName, metav1.GetOptions{})
 	if err != nil {
 		log.Fatal(err.Error())
 	}
@@ -18,13 +18,13 @@ func getPodLabel(namespace, podName string) {
 
 func listPod(namespace string, labels map[string]string) {
 	clientSet := GetKubeClient()
-	selector, err := v1.LabelSelectorAsSelector(&v1.LabelSelector{
+	selector, err := metav1.LabelSelectorAsSelector(&metav1.LabelSelector{
 		MatchLabels: labels,
 	})
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	podList, err := clientSet.CoreV1().Pods(namespace).List(context.TODO(), v1.ListOptions{
+	podList, err := clientSet.CoreV1().Pods(namespace).List(context.TODO(), metav1.ListOptions{
 		LabelSelector: selector.String(),
 	})
 	if err != nil {
