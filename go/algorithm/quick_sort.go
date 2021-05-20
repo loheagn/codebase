@@ -1,25 +1,27 @@
 package algorithm
 
 func partition(arr []int, l, r int, less func(i, j int) bool) int {
+	swap := func(i, j int) { arr[i], arr[j] = arr[j], arr[i] }
 	if l >= r {
 		return l
 	}
 	k, i, j := l, l+1, r
-	for i <= j {
-		if less(i, k) {
-			arr[k], arr[i] = arr[i], arr[k]
-			k, i = k+1, i+1
-			continue
+	for {
+		for i < r && less(i, k) {
+			i++
+		}
+		for j > l && !less(j, k) {
+			j--
 		}
 
-		// 否则的话，需要移动j交换位置
-		if !less(j, k) {
-			j--
-		} else {
-			arr[i], arr[j] = arr[j], arr[i]
+		if i >= j {
+			break
 		}
+		swap(i, j)
+		i, j = i+1, j-1
 	}
-	return i - 1
+	swap(j, k)
+	return j
 }
 
 func quickSort(arr []int, l, r int, less func(i, j int) bool) {
