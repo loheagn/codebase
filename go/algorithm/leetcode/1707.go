@@ -1,5 +1,7 @@
 package leetcode
 
+import "fmt"
+
 type Node struct {
 	val       int
 	zero, one *Node
@@ -52,7 +54,7 @@ func maximizeXor(nums []int, queries [][]int) []int {
 			}
 			if !mOK {
 				tm := (m >> i) & 1
-				if tm > next.val {
+				if tm < next.val {
 					if p.zero == nil {
 						return -1
 					}
@@ -62,12 +64,11 @@ func maximizeXor(nums []int, queries [][]int) []int {
 					mOK = true
 				}
 			}
-			if next == nil {
-				return -1
-			}
+			fmt.Print(next.val)
 			p, re = next, re^(next.val<<i)
 		}
-		return re
+		fmt.Println()
+		return re ^ x
 	}
 
 	re := make([]int, 0, len(queries))
