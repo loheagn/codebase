@@ -15,11 +15,11 @@ type RunOption struct {
 	Cmd   []string
 }
 
-func Run(config *RunOption, output, outputErr io.Writer) error {
+func Run(config *RunOption, output io.Writer) (exitCode int, err error) {
 	ctx := context.Background()
 	cli, err := docker.GetClient()
 	if err != nil {
-		return err
+		return 1, err
 	}
 
 	resp, err := cli.ContainerCreate(ctx, &container.Config{
@@ -27,27 +27,32 @@ func Run(config *RunOption, output, outputErr io.Writer) error {
 		Cmd:   config.Cmd,
 	}, nil, nil, nil, "")
 	if err != nil {
-		return err
+		return 1, err
 	}
 
 	if err := cli.ContainerStart(ctx, resp.ID, types.ContainerStartOptions{}); err != nil {
-		return err
+		return 1, err
 	}
 
 	statusCh, errCh := cli.ContainerWait(ctx, resp.ID, container.WaitConditionNotRunning)
 	select {
 	case err := <-errCh:
 		if err != nil {
-			return err
+			return 1, err
 		}
 	case <-statusCh:
 	}
 
 	out, err := cli.ContainerLogs(ctx, resp.ID, types.ContainerLogsOptions{ShowStdout: true})
 	if err != nil {
-		return err
+		return 1, err
 	}
 
-	_, err = stdcopy.StdCopy(output, outputErr, out)
-	return err
+	_, err = stdcopy.StdCopy(output, output, out)
+	if err != nil {
+		return 1, err
+	}
+
+	status, err := cli.ContainerInspect(ctx, resp.ID)
+	return status.State.ExitCode, err
 }
