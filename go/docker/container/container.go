@@ -15,7 +15,7 @@ type RunOption struct {
 	Cmd   []string
 }
 
-func Run(config *RunOption, output io.Writer) (exitCode int, err error) {
+func Run(opt *RunOption, output io.Writer) (exitCode int, err error) {
 	ctx := context.Background()
 	cli, err := docker.GetClient()
 	if err != nil {
@@ -23,8 +23,8 @@ func Run(config *RunOption, output io.Writer) (exitCode int, err error) {
 	}
 
 	resp, err := cli.ContainerCreate(ctx, &container.Config{
-		Image: config.Image,
-		Cmd:   config.Cmd,
+		Image: opt.Image,
+		Cmd:   opt.Cmd,
 	}, nil, nil, nil, "")
 	if err != nil {
 		return 1, err
