@@ -34,8 +34,8 @@ impl Config {
             return Err("no enough arguments");
         }
         return Ok(Config {
-            query: args[0].clone(),
-            filename: args[1].clone(),
+            query: args[1].clone(),
+            filename: args[2].clone(),
         });
     }
 }
