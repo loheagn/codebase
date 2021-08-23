@@ -22,6 +22,9 @@ struct Config {
 
 impl Config {
     fn new(args: &[String]) -> Config {
+        if args.len() < 3 {
+            panic!("no enough arguments!")
+        }
         Config {
             query: args[0].clone(),
             filename: args[1].clone(),
