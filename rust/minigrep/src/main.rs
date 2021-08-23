@@ -21,13 +21,13 @@ struct Config {
 }
 
 impl Config {
-    fn new(args: &[String]) -> Config {
+    fn new(args: &[String]) -> Result<Config, &str> {
         if args.len() < 3 {
-            panic!("no enough arguments!")
+            return Err("no enough arguments");
         }
-        Config {
+        return Ok(Config {
             query: args[0].clone(),
             filename: args[1].clone(),
-        }
+        });
     }
 }
