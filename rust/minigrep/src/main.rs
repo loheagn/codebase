@@ -22,8 +22,9 @@ struct Config {
 
 impl Config {
     fn new(args: &[String]) -> Config {
-        let query = args[1].clone();
-        let filename = args[2].clone();
-        Config { query, filename }
+        Config {
+            query: args[0].clone(),
+            filename: args[1].clone(),
+        }
     }
 }
