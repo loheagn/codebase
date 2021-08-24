@@ -7,6 +7,8 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
+fn search(key: String, contents: String) {}
+
 pub struct Config {
     pub query: String,
     pub filename: String,
@@ -23,3 +25,6 @@ impl Config {
         });
     }
 }
+
+#[cfg(test)]
+mod tests {}
