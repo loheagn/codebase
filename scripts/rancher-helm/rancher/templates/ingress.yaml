@@ -1,0 +1,25 @@
+---
+# Source: rancher/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: rancher
+  labels:
+    app: rancher
+    chart: rancher-2.5.9
+    heritage: Helm
+    release: rancher
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false" # turn off ssl redirect for external.
+    nginx.ingress.kubernetes.io/use-forwarded-headers: "true"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "30"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "1800"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "1800"
+spec:
+  rules:
+  - host: rancher.scs.buaa.edu.cn  # hostname to access rancher server
+    http:
+      paths:
+      - backend:
+          serviceName: rancher
+          servicePort: 443
