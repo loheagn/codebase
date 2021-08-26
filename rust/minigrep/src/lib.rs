@@ -20,7 +20,7 @@ fn search<'a>(key: &str, contents: &'a str) -> Vec<&'a str> {
         }
     }
 
-    return result;
+    result
 }
 
 pub struct Config {
@@ -33,10 +33,10 @@ impl Config {
         if args.len() < 3 {
             return Err("no enough arguments");
         }
-        return Ok(Config {
+        Ok(Config {
             query: args[1].clone(),
             filename: args[2].clone(),
-        });
+        })
     }
 }
 
