@@ -57,7 +57,7 @@ impl Config {
         Ok(Config {
             query: args[1].clone(),
             filename: args[2].clone(),
-            case_sensitive: case_sensitive,
+            case_sensitive,
         })
     }
 }
