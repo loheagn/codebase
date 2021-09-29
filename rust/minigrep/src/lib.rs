@@ -18,15 +18,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 }
 
 fn search<'a>(key: &str, contents: &'a str) -> Vec<&'a str> {
-    let mut result = vec![];
-
-    for line in contents.lines() {
-        if line.contains(key) {
-            result.push(line)
-        }
-    }
-
-    result
+    contents.lines().filter(|line| line.contains(key)).collect()
 }
 
 fn search_case_insensitive<'a>(key: &str, contents: &'a str) -> Vec<&'a str> {
