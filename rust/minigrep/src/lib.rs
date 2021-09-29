@@ -23,15 +23,10 @@ fn search<'a>(key: &str, contents: &'a str) -> Vec<&'a str> {
 
 fn search_case_insensitive<'a>(key: &str, contents: &'a str) -> Vec<&'a str> {
     let key = key.to_lowercase();
-    let mut result = vec![];
-
-    for line in contents.lines() {
-        if line.to_lowercase().contains(&key) {
-            result.push(line)
-        }
-    }
-
-    result
+    contents
+        .lines()
+        .filter(|line| line.to_lowercase().contains(&key))
+        .collect()
 }
 
 pub struct Config {
