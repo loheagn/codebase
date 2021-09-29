@@ -1,5 +1,5 @@
 use std::error::Error;
-use std::fs;
+use std::{env, fs};
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let contents = fs::read_to_string(config.filename)?;
@@ -49,14 +49,23 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn new(args: &[String]) -> Result<Config, &str> {
-        if args.len() < 3 {
-            return Err("no enough arguments");
-        }
+    pub fn new(mut args: env::Args) -> Result<Config, &'static str> {
+        args.next();
+
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a query string"),
+        };
+
+        let filename = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a filename"),
+        };
+
         let case_sensitive = std::env::var("CASE_INSENSITIVE").is_err();
         Ok(Config {
-            query: args[1].clone(),
-            filename: args[2].clone(),
+            query,
+            filename,
             case_sensitive: case_sensitive,
         })
     }
